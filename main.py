@@ -61,7 +61,8 @@ def leituraDoArquivo(automato):
     automato.set_estadosFinais(estadoFinal)
     automato.set_transicoes(transicoes)
     automato.set_string(palavra)
-
+    automato.criaGif()
+    
     return automato
 
 
