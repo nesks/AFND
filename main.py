@@ -4,7 +4,8 @@ Trabalho efetuado pelo aluno do curso de Sistemas de Informação do ICEA - UFOP
 Felipe Sousa Nunes - 16.1.8152
 
 """
-from automato import Automato
+#from automato import Automato
+from afnd import Automato
 
 def leituraDoArquivo(automato):
     f = open("arquivo.txt", "r")
@@ -40,15 +41,39 @@ def leituraDoArquivo(automato):
     print("estado final: ", estadoFinal)
     print("palavra: ", palavra)
 
-    
-    dicEntradas = {}
     for x in texto:
-        
-        dicEntradas[x[1]] = x[3]
-        transicoes[x[0]] = dict(dicEntradas)
+        lista = []        
+        dicEntradas = {}
+       # print( " x1: ", str(x[1]), " transicoes[x[0]]: ",str(transicoes[x[0]]))
+      #   and 
+          #  
+         #   print("entrou")
+        if x[1] == '/':
+            x[1] = "lambda"
+            print("entrou aqui")
+        if x[0] in transicoes:
+            dicEntrada = transicoes[x[0]] 
+            print(dicEntrada)
+            if x[1] in transicoes[x[0]]:
+                print("entrou no if 2")
+                lista = transicoes[x[0]][x[1]]                
+            lista.append(x[3])
+            
+            dicEntrada[x[1]] = lista
+            transicoes[x[0]] = dict(dicEntrada)
+        else:            
+            lista.append(x[3])
+            if x[1] == 'lambda':
+                dicEntradas['lambda'] = [x[3]]                 
+                transicoes[x[0]] = dict(dicEntradas)
+            else:
+                dicEntradas[x[1]] = lista
+                dicEntradas['lambda'] = [] 
+                transicoes[x[0]] = dict(dicEntradas)
+
         if x[0] not in estados:
             estados.append(x[0])
-        if x[1] not in alfabeto:
+        if x[1] not in alfabeto and x[1]!="lambda":
             alfabeto.append(x[1])
 
     print("\n\nestados: ", estados)
@@ -63,7 +88,6 @@ def leituraDoArquivo(automato):
     automato.set_string(palavra)
     automato.criaGif()
     
-    return automato
 
 
 def main():
